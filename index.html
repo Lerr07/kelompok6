@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dashboard Penjadwalan Hemodialisis - Kelompok 6" />
+  <title>Dashboard Hemodialisis Kelompok 6</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">PRAKTIKUM PERTEMUAN 7 - KELOMPOK 6</p>
+      <h1>HemoCare Dashboard</h1>
+      <p class="subtitle">Sistem Pemantauan HD Pintar • Data 100% sintetis</p>
+    </div>
+    <div class="date-box">
+      <span class="icon-calendar"></span>
+      <strong id="currentDate">Memuat...</strong>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="notice" aria-label="Catatan etika data">
+      
+      
+    </section>
+
+    <section class="summary-grid" aria-label="Ringkasan layanan">
+      <article class="stat-card">
+        <span>Total Pasien</span>
+        <strong id="countTotal">0</strong>
+      </article>
+      <article class="stat-card success-border">
+        <span>Selesai</span>
+        <strong id="countSelesai" class="text-success">0</strong>
+      </article>
+      <article class="stat-card primary-border">
+        <span>Berlangsung</span>
+        <strong id="countBerlangsung" class="text-primary">0</strong>
+      </article>
+      <article class="stat-card warning-border">
+        <span>Menunggu</span>
+        <strong id="countMenunggu" class="text-warning">0</strong>
+      </article>
+      <article class="stat-card danger-border">
+        <span>Terlambat</span>
+        <strong id="countTerlambat" class="text-danger">0</strong>
+      </article>
+      <article class="stat-card gray-border">
+        <span>Batal</span>
+        <strong id="countBatal" class="text-gray">0</strong>
+      </article>
+    </section>
+
+    <section class="section-card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow text-danger">Sistem Peringatan Otomatis</p>
+          <h2>Kontrol Risiko Penjadwalan</h2>
+        </div>
+        <button id="resetBtn" class="btn secondary" type="button">Reset Filter</button>
+      </div>
+      <div id="warningArea" class="warning-grid">
+        <!-- Warnings injected via JS -->
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow text-primary">MANAJEMEN JADWAL</p>
+          <h2>Jadwal Hemodialisis Harian</h2>
+        </div>
+        <p class="muted">Menampilkan <span id="visibleCount" class="font-bold text-primary">0</span> data</p>
+      </div>
+
+      <div class="filters">
+        <label>
+          Pilih Sesi
+          <select id="filterSession">
+            <option value="Semua">Semua Sesi</option>
+            <option value="Pagi">Pagi (07:00 - 12:00)</option>
+            <option value="Siang">Siang (13:00 - 18:00)</option>
+          </select>
+        </label>
+        <label>
+          Status Pasien
+          <select id="filterStatus">
+            <option value="Semua">Semua Status</option>
+            <option value="Terjadwal">Terjadwal</option>
+            <option value="Menunggu">Menunggu</option>
+            <option value="Berlangsung">Berlangsung</option>
+            <option value="Selesai">Selesai</option>
+            <option value="Terlambat">Terlambat</option>
+            <option value="Batal">Batal</option>
+          </select>
+        </label>
+        <label>
+          Mesin HD
+          <select id="filterMachine">
+            <option value="Semua">Semua Mesin</option>
+          </select>
+        </label>
+        <label class="search-label">
+          Cari Pasien
+          <input id="searchPatient" type="search" placeholder="Cth: P001..." />
+        </label>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Kode Pasien</th>
+              <th>Risiko Klinis</th>
+              <th>Sesi</th>
+              <th>Waktu</th>
+              <th>Mesin</th>
+              <th>Status</th>
+              <th>Catatan</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody">
+            <!-- Table rows injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="two-column">
+      <article class="section-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow text-primary">INFRASTRUKTUR</p>
+            <h2>Status Mesin HD</h2>
+          </div>
+        </div>
+        <div id="machineGrid" class="machine-grid">
+          <!-- Machine cards injected via JS -->
+        </div>
+
+        <!-- Daftar Anggota Kelompok 6 -->
+        <div class="team-section">
+          <h3 class="team-heading">Tim Pengembang (Kelompok 6)</h3>
+          <ul class="team-list">
+            <li><strong>Gusti Aldi Romadhoni</strong> <span>(Ketua / Analisis Kebutuhan)</span></li>
+            <li><strong>Elsa Septi Liani</strong> <span>(Analisis Data MIK)</span></li>
+            <li><strong>Farrel Alfatio Amandaputra</strong> <span>(UI/UX)</span></li>
+            <li><strong>Tahta Wussatil Fadhilah</strong> <span>(Front-end)</span></li>
+            <li><strong>Ummu Barokatus Sholihah</strong> <span>(Deployment)</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="section-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow text-primary">KAPASITAS</p>
+            <h2>Pemanfaatan Sesi Harian</h2>
+          </div>
+        </div>
+
+        <div class="session-indicator">
+          <div class="indicator-row">
+            <div>
+              <strong class="session-label pagi-label">Sesi Pagi</strong>
+              <span id="pagiText" class="muted">0 pasien</span>
+            </div>
+            <div class="progress">
+              <div id="pagiBar" class="progress-bar pagi-bar"></div>
+            </div>
+          </div>
+
+          <div class="indicator-row">
+            <div>
+              <strong class="session-label siang-label">Sesi Siang</strong>
+              <span id="siangText" class="muted">0 pasien</span>
+            </div>
+            <div class="progress">
+              <div id="siangBar" class="progress-bar siang-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-note">
+          <strong>Fitur Baru Kelompok 6:</strong>
+          Menambahkan kolom <strong>Risiko Klinis</strong> (Tinggi/Sedang/Rendah) pada tabel jadwal. 
+          Fitur ini membantu perawat memprioritaskan pasien dan mengatur tingkat observasi selama proses Hemodialisis berlangsung. 
+          Sistem juga akan memberikan peringatan otomatis di panel atas jika ada pasien risiko tinggi yang sedang berstatus 'Menunggu'.
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>Praktikum Transformasi Manajemen Informasi Kesehatan Ginjal &copy; 2026</p>
+    <p>Dibuat oleh Kelompok 6 | Desain Midnight & Electric Blue | Data Sintetis 15 Pasien</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
