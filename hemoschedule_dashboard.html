@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HemoSchedule | HD Scheduling Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#102A43; --navy2:#173b5a; --teal:#14B8A6; --teal2:#2DD4BF;
+  --bg:#F6F8FB; --white:#fff; --text:#1F2937; --muted:#6B7280;
+  --border:#E5E7EB; --blue:#2563EB; --orange:#F59E0B; --green:#16A34A; --red:#DC2626;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}
+.sidebar{width:255px;background:var(--navy);color:white;padding:26px 18px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0}
+.brand{display:flex;align-items:center;gap:12px;padding:8px 10px 28px;border-bottom:1px solid rgba(255,255,255,.14)}
+.brand-icon{width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#2dd4bf,#0f766e);display:grid;place-items:center;font-size:25px}
+.brand h1{font-size:18px;margin:0}.brand p{margin:1px 0 0;font-size:10px;color:#cbd5e1}
+.nav{padding-top:20px}.nav a{color:#d6e0ea;text-decoration:none;display:flex;align-items:center;gap:13px;padding:13px 14px;margin-bottom:7px;border-radius:8px;font-size:13px;cursor:pointer;transition:.2s}
+.nav a:hover,.nav a.active{background:linear-gradient(90deg,#218c8d,#168c94);color:#fff}.nav .bottom{margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.16)}
+.main{margin-left:255px;width:calc(100% - 255px);padding:25px 32px 35px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.topbar h2{margin:0;font-size:24px}.topbar p{margin:4px 0;color:var(--muted);font-size:12px}
+.top-actions{display:flex;align-items:center;gap:17px}.date{background:white;border:1px solid var(--border);padding:11px 15px;border-radius:9px;font-size:11px;font-weight:600}.bell{font-size:23px;position:relative}.bell b{position:absolute;background:#ef4444;color:white;border-radius:50%;font-size:9px;width:16px;height:16px;text-align:center;top:-5px;right:-9px}.admin{display:flex;align-items:center;gap:9px;font-size:12px}.avatar{width:37px;height:37px;border-radius:50%;background:#e5e7eb;display:grid;place-items:center;font-size:19px}
+.welcome{background:white;border:1px solid var(--border);border-radius:14px;padding:20px 25px;display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.welcome h3{margin:0;font-size:16px}.welcome p{font-size:11px;color:var(--muted);margin:7px 0 0}.today{text-align:center;border-left:1px solid var(--border);padding-left:30px}.today small{font-size:9px;font-weight:700}.today strong{font-size:31px;line-height:1}.today span{font-size:9px;font-weight:600;margin-left:8px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:15px}.card{background:white;border:1px solid var(--border);border-radius:13px;padding:16px;min-height:112px}.card-top{display:flex;align-items:center;gap:12px}.icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:white;font-size:20px}.i-teal{background:#218c8d}.i-orange{background:#f59e0b}.i-blue{background:#2873bd}.i-purple{background:#6951c6}.i-red{background:#ef4444}.number{font-size:25px;font-weight:700}.label{font-size:9px;margin-top:2px}.card small{display:block;margin-top:14px;font-size:8px}.good{color:#15965a}.warn{color:#d97706}.danger{color:#dc2626}
+.section-title{font-size:13px;font-weight:700;margin:13px 0 9px;letter-spacing:.2px}
+.alerts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.alert{background:white;border-radius:11px;padding:15px 17px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;font-size:11px}.alert.red{border-color:#f7b5b5}.alert.orange{border-color:#f4d18a}.alert-icon{font-size:22px}.alert .grow{flex:1}.alert button{border:0;background:transparent;font:600 9px Poppins;color:#17649a;cursor:pointer}
+.schedule-box{margin-top:10px}.controls{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:11px;flex-wrap:wrap}.search{position:relative}.search input{width:150px;padding:10px 33px 10px 12px;border:1px solid var(--border);border-radius:9px;font:10px Poppins;background:white;outline:none}.search span{position:absolute;right:11px;top:8px;color:var(--muted)}.filters{display:flex;gap:8px;flex-wrap:wrap}.filter-label{font-size:9px;align-self:center;margin-left:10px}.btn{border:1px solid var(--border);background:white;border-radius:7px;padding:9px 14px;font:10px Poppins;cursor:pointer;color:#374151}.btn.active{background:#218c8d;color:white;border-color:#218c8d}.btn.status-all{background:#218c8d;color:white}
+.table-wrap{overflow:auto;background:white;border:1px solid var(--border);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:850px}th{background:#f2f5f8;text-align:left;font-size:9px;padding:10px 13px;color:#374151}td{padding:8px 13px;border-top:1px solid #edf0f2;font-size:10px}tr:hover td{background:#fafcfd}.badge{display:inline-block;padding:4px 9px;border-radius:5px;font-size:9px;font-weight:600}.scheduled{color:#2563a7;background:#e8f1fb}.waiting{color:#bd7405;background:#fff5dc}.completed{color:#237b45;background:#e7f6eb}
+.machine-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.machine{background:white;border:1px solid var(--border);border-radius:13px;padding:15px}.machine.maintenance{border-color:#f5b5b5}.machine-head{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}.machine-icon{font-size:27px}.machine-status{font-size:9px;margin:12px 0 5px;font-weight:600}.machine-status.active{color:#15803d}.machine-status.maint{color:#c2410c}.machine small{font-size:9px}
+.mobile-menu{display:none}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,1fr)}.machine-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){.sidebar{transform:translateX(-100%);z-index:5;transition:.3s}.sidebar.show{transform:translateX(0)}.main{margin-left:0;width:100%;padding:18px}.mobile-menu{display:block;border:0;background:white;font-size:22px;border-radius:8px;padding:6px 10px}.topbar h2{font-size:19px}.date{display:none}.cards{grid-template-columns:repeat(2,1fr)}.alerts{grid-template-columns:1fr}.machine-grid{grid-template-columns:repeat(2,1fr)}.welcome{padding:16px}.today{padding-left:15px}.admin{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-icon">✚</div><div><h1>HemoSchedule</h1><p>HD Scheduling System</p></div></div>
+  <nav class="nav">
+    <a class="active" href="#dashboard">⌂ <span>Dashboard</span></a>
+    <a href="#schedule">▣ <span>Schedule</span></a>
+    <a href="#schedule">♟ <span>Patients</span></a>
+    <a href="#machines">▤ <span>HD Machines</span></a>
+    <div class="bottom">
+      <a href="#dashboard">⚙ <span>Settings</span></a>
+      <a href="#dashboard">⇥ <span>Log Out</span></a>
+    </div>
+  </nav>
+</aside>
+
+<main class="main" id="dashboard">
+  <header class="topbar">
+    <div style="display:flex;gap:12px;align-items:center"><button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('show')">☰</button><div><h2>Dashboard Overview</h2><p>Monitor your hemodialysis schedule and machine availability.</p></div></div>
+    <div class="top-actions"><div class="date">▣ &nbsp; Monday, 25 August 2026</div><div class="bell">♧<b id="notifCount">2</b></div><div class="admin"><div class="avatar">●</div><div><b>Admin</b><br><small style="color:#6b7280">Administrator</small></div></div></div>
+  </header>
+
+  <section class="welcome">
+    <div><h3>Good Morning, Admin 👋</h3><p>Here's an overview of today's hemodialysis schedule.</p></div>
+    <div class="today"><small>TODAY</small><br><strong>25</strong><span>AUGUST<br>2026</span></div>
+  </section>
+
+  <section class="cards">
+    <div class="card"><div class="card-top"><div class="icon i-teal">♟</div><div><div class="number" id="totalPatients">16</div><div class="label">Total Patients</div></div></div><small class="good">↑ 2 from yesterday</small></div>
+    <div class="card"><div class="card-top"><div class="icon i-orange">☀</div><div><div class="number" id="morningCount">8</div><div class="label">Morning Session</div></div></div><small>07.00 – 11.00 WIB</small></div>
+    <div class="card"><div class="card-top"><div class="icon i-blue">☀</div><div><div class="number" id="afternoonCount">8</div><div class="label">Afternoon Session</div></div></div><small>12.00 – 16.00 WIB</small></div>
+    <div class="card"><div class="card-top"><div class="icon i-purple">▣</div><div><div class="number" id="activeMachines">5 / 6</div><div class="label">Active Machines</div></div></div><small class="warn">1 under maintenance</small></div>
+    <div class="card"><div class="card-top"><div class="icon i-red">⚠</div><div><div class="number" id="attentionCount">3</div><div class="label">Need Attention</div></div></div><small class="danger">Patients waiting</small></div>
+  </section>
+
+  <div class="section-title">SYSTEM ALERTS</div>
+  <section class="alerts">
+    <div class="alert red"><div class="alert-icon">⚠</div><div class="grow" id="maintenanceAlert">Machine HD-04 is currently under maintenance.</div><button onclick="document.getElementById('machines').scrollIntoView({behavior:'smooth'})">View Details →</button></div>
+    <div class="alert orange"><div class="alert-icon">⌛</div><div class="grow" id="waitingAlert">3 patients are currently waiting for hemodialysis.</div><button onclick="filterStatus('Waiting')">View Patients →</button></div>
+  </section>
+
+  <section class="schedule-box" id="schedule">
+    <div class="section-title">TODAY'S HEMODIALYSIS SCHEDULE</div>
+    <div class="controls">
+      <div class="search"><input id="searchInput" placeholder="Search patient..." oninput="renderPatients()"><span>⌕</span></div>
+      <div class="filters" id="sessionFilters">
+        <button class="btn active" data-session="All" onclick="setSession(this)">All Sessions</button>
+        <button class="btn" data-session="Morning" onclick="setSession(this)">☀ Morning</button>
+        <button class="btn" data-session="Afternoon" onclick="setSession(this)">☀ Afternoon</button>
+      </div>
+      <div class="filters" id="statusFilters">
+        <span class="filter-label">Status Filter :</span>
+        <button class="btn status-all" data-status="All" onclick="setStatus(this)">All</button>
+        <button class="btn" data-status="Scheduled" onclick="setStatus(this)">Scheduled</button>
+        <button class="btn" data-status="Waiting" onclick="setStatus(this)">Waiting</button>
+        <button class="btn" data-status="Completed" onclick="setStatus(this)">Completed</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>No</th><th>Patient</th><th>Medical Record</th><th>Machine</th><th>Session</th><th>Time</th><th>Status</th></tr></thead>
+      <tbody id="patientTable"></tbody></table>
+    </div>
+  </section>
+
+  <section id="machines">
+    <div class="section-title">MACHINE STATUS</div>
+    <div class="machine-grid" id="machineGrid"></div>
+  </section>
+</main>
+</div>
+
+<script>
+const patients = [
+ {name:"Andi Pratama",rm:"RM001",machine:"HD-01",session:"Morning",time:"07.00",status:"Scheduled"},
+ {name:"Budi Santoso",rm:"RM002",machine:"HD-02",session:"Morning",time:"07.00",status:"Waiting"},
+ {name:"Citra Lestari",rm:"RM003",machine:"HD-03",session:"Morning",time:"07.30",status:"Completed"},
+ {name:"Deni Saputra",rm:"RM004",machine:"HD-05",session:"Morning",time:"08.00",status:"Scheduled"},
+ {name:"Eka Putri",rm:"RM005",machine:"HD-06",session:"Morning",time:"08.00",status:"Waiting"},
+ {name:"Fajar Nugroho",rm:"RM006",machine:"HD-01",session:"Morning",time:"08.30",status:"Scheduled"},
+ {name:"Gina Maharani",rm:"RM007",machine:"HD-02",session:"Morning",time:"09.00",status:"Scheduled"},
+ {name:"Hendra Wijaya",rm:"RM008",machine:"HD-03",session:"Morning",time:"09.30",status:"Completed"},
+ {name:"Intan Permata",rm:"RM009",machine:"HD-01",session:"Afternoon",time:"12.00",status:"Scheduled"},
+ {name:"Joko Susilo",rm:"RM010",machine:"HD-02",session:"Afternoon",time:"12.00",status:"Scheduled"},
+ {name:"Karin Amelia",rm:"RM011",machine:"HD-03",session:"Afternoon",time:"12.30",status:"Waiting"},
+ {name:"Lukman Hakim",rm:"RM012",machine:"HD-05",session:"Afternoon",time:"13.00",status:"Scheduled"},
+ {name:"Maya Sari",rm:"RM013",machine:"HD-06",session:"Afternoon",time:"13.30",status:"Completed"},
+ {name:"Nanda Prakoso",rm:"RM014",machine:"HD-01",session:"Afternoon",time:"14.00",status:"Scheduled"},
+ {name:"Olivia Putri",rm:"RM015",machine:"HD-02",session:"Afternoon",time:"14.30",status:"Scheduled"},
+ {name:"Rian Saputra",rm:"RM016",machine:"HD-03",session:"Afternoon",time:"15.00",status:"Waiting"}
+];
+const machines = [
+ {id:"HD-01",status:"Active",info:"Available"},
+ {id:"HD-02",status:"Active",info:"Available"},
+ {id:"HD-03",status:"Active",info:"Available"},
+ {id:"HD-04",status:"Maintenance",info:"Not Available"},
+ {id:"HD-05",status:"Active",info:"Available"},
+ {id:"HD-06",status:"Active",info:"Available"}
+];
+let selectedSession="All", selectedStatus="All";
+
+function renderPatients(){
+ const query=document.getElementById("searchInput").value.toLowerCase();
+ const data=patients.filter(p=>
+  (selectedSession==="All"||p.session===selectedSession) &&
+  (selectedStatus==="All"||p.status===selectedStatus) &&
+  (p.name.toLowerCase().includes(query)||p.rm.toLowerCase().includes(query))
+ );
+ document.getElementById("patientTable").innerHTML=data.map((p,i)=>`
+  <tr><td>${String(i+1).padStart(2,"0")}</td><td>${p.name}</td><td>${p.rm}</td><td>${p.machine}</td>
+  <td>${p.session==="Morning"?"☀ Morning":"☀ Afternoon"}</td><td>${p.time}</td>
+  <td><span class="badge ${p.status.toLowerCase()}">${p.status}</span></td></tr>`).join("") ||
+  `<tr><td colspan="7" style="text-align:center;padding:25px;color:#6B7280">No patient data found.</td></tr>`;
+}
+function setSession(btn){
+ selectedSession=btn.dataset.session;
+ document.querySelectorAll("#sessionFilters .btn").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active"); renderPatients();
+}
+function setStatus(btn){
+ selectedStatus=btn.dataset.status;
+ document.querySelectorAll("#statusFilters .btn").forEach(b=>b.classList.remove("status-all","active"));
+ btn.classList.add(btn.dataset.status==="All"?"status-all":"active"); renderPatients();
+}
+function filterStatus(status){
+ selectedStatus=status;
+ document.querySelectorAll("#statusFilters .btn").forEach(b=>b.classList.remove("status-all","active"));
+ document.querySelector(`#statusFilters [data-status="${status}"]`).classList.add("active");
+ document.getElementById("schedule").scrollIntoView({behavior:"smooth"});
+ renderPatients();
+}
+function renderMachines(){
+ document.getElementById("machineGrid").innerHTML=machines.map(m=>{
+  const count=patients.filter(p=>p.machine===m.id).length;
+  return `<div class="machine ${m.status==="Maintenance"?"maintenance":""}">
+   <div class="machine-head"><span class="machine-icon">▥</span><span>${m.id}</span></div>
+   <div class="machine-status ${m.status==="Active"?"active":"maint"}">${m.status==="Active"?"● ACTIVE":"⚠ MAINTENANCE"}</div>
+   <small>${m.status==="Active"?count+" Patients Scheduled":m.info}</small></div>`
+ }).join("");
+}
+function updateDashboard(){
+ const morning=patients.filter(p=>p.session==="Morning").length;
+ const afternoon=patients.filter(p=>p.session==="Afternoon").length;
+ const waiting=patients.filter(p=>p.status==="Waiting").length;
+ const active=machines.filter(m=>m.status==="Active").length;
+ const maintenance=machines.filter(m=>m.status==="Maintenance");
+ document.getElementById("totalPatients").textContent=patients.length;
+ document.getElementById("morningCount").textContent=morning;
+ document.getElementById("afternoonCount").textContent=afternoon;
+ document.getElementById("activeMachines").textContent=`${active} / ${machines.length}`;
+ document.getElementById("attentionCount").textContent=waiting;
+ document.getElementById("waitingAlert").textContent=`${waiting} patients are currently waiting for hemodialysis.`;
+ document.getElementById("maintenanceAlert").textContent=maintenance.length
+  ? `Machine ${maintenance.map(m=>m.id).join(", ")} is currently under maintenance.` : "All HD machines are available.";
+ document.getElementById("notifCount").textContent=maintenance.length+(waiting>0?1:0);
+}
+updateDashboard(); renderPatients(); renderMachines();
+</script>
+</body>
+</html>
